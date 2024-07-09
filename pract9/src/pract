@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int min_steps(int x, int y) {
+    if (x == y) {
+        return 0;
+    }
+    int distance = y - x;
+    int step = 1;
+    int steps = 0;
+    int current_position = x;
+    while (current_position < y) {
+        if (current_position + step > y) {
+            step--;
+        }
+        current_position += step;
+        steps++;
+        
+        if (steps > 1) {
+            if (current_position + (step + 1) <= y) {
+                step++;
+            } else if (current_position + step > y) {
+                step--;
+            }
+        }
+    }
+    
+    return steps;
+}
+int main() {
+    int x, y;
+    printf("Введіть значення x: ");
+    scanf("%d", &x);
+    printf("Введіть значення y: ");
+    scanf("%d", &y);
+    
+    if (x < 0 || y < x || y >= 2147483648) {
+        printf("Некоректні значення x або y\n");
+        return 1;
+    }
+
+    int result = min_steps(x, y);
+    printf("Мінімальна кількість кроків: %d\n", result);
+
+    return 0;
+}
