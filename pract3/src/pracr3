@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_P 30
+
+long long memo[MAX_P+1][3][2];
+long long countNumbers(int pos, int consecutive, int digit, int p) {
+    if (pos == p) {
+        return 1;
+    }
+    if (memo[pos][consecutive][digit] != -1) {
+        return memo[pos][consecutive][digit];
+    }
+    long long result = 0;
+    if (consecutive < 2) {
+        result += countNumbers(pos + 1, consecutive + 1, digit, p);
+    }
+    result += countNumbers(pos + 1, 1, !digit, p);
+    memo[pos][consecutive][digit] = result;
+    return result;
+}
+int main() {
+    int p;
+    printf("Введіть кількість розрядів: ");
+    scanf("%d", &p);
+    if (p < 1 || p > MAX_P) {
+        printf("Некоректне значення p\n");
+        return 1;
+    }
+    memset(memo, -1, sizeof(memo));
+    long long result = countNumbers(1, 1, 0, p) + countNumbers(1, 1, 1, p);
+    printf("Кількість чисел із %d розрядів: %lld\n", p, result);
+    return 0;
+}
